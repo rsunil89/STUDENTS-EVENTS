@@ -12,11 +12,21 @@ class EventController extends Controller
     {
         $category = $request->query('category');
 
+        $keywords = [
+            'music' => ['music', 'song', 'band', 'concert', 'choir', 'dj'],
+            'academic' => ['academic', 'study', 'workshop', 'lecture', 'seminar', 'class', 'revision', 'career'],
+            'sports' => ['sports', 'football', 'running', 'gym', 'fitness', 'training', 'match'],
+            'tech' => ['tech', 'coding', 'software', 'web', 'database', 'ai', 'cyber', 'laravel', 'react', 'development'],
+            'arts' => ['arts', 'design', 'ux', 'creative', 'painting', 'drawing', 'media'],
+        ];
+
         $events = Event::where('status', '!=', 'cancelled')
-            ->when($category && $category !== 'all', function ($query) use ($category) {
-                $query->where(function ($q) use ($category) {
-                    $q->where('title', 'like', '%' . $category . '%')
-                      ->orWhere('description', 'like', '%' . $category . '%');
+            ->when($category && isset($keywords[$category]), function ($query) use ($keywords, $category) {
+                $query->where(function ($q) use ($keywords, $category) {
+                    foreach ($keywords[$category] as $word) {
+                        $q->orWhere('title', 'like', '%' . $word . '%')
+                          ->orWhere('description', 'like', '%' . $word . '%');
+                    }
                 });
             })
             ->withCount(['bookings' => function ($q) {
