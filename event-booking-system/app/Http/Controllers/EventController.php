@@ -51,6 +51,7 @@ class EventController extends Controller
         }]);
 
         $isBooked = false;
+
         if (Auth::check()) {
             $isBooked = $event->bookings()
                 ->where('user_id', Auth::id())
@@ -63,14 +64,11 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        $this->authorize('update', $event);
         return view('events.edit', compact('event'));
     }
 
     public function update(Request $request, Event $event)
     {
-        $this->authorize('update', $event);
-
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -88,7 +86,6 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        $this->authorize('delete', $event);
         $event->delete();
 
         return redirect()->route('events.index')
