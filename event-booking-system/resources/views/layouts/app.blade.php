@@ -14,6 +14,10 @@
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-left { animation: fadeInLeft 0.5s ease-in; }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .fade-in-right { animation: fadeInRight 0.5s ease-in; }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
         .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transition: all 0.3s ease; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102,126,234,0.3); }
         .btn-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); transition: all 0.3s ease; }
@@ -34,6 +38,28 @@
         .input-field:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
         .hero-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); position: relative; overflow: hidden; }
         .hero-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+        .hero-section::after { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(102,126,234,0.15) 0%, transparent 70%); border-radius: 50%; }
+        .hero-image-card { position: relative; overflow: hidden; }
+        .hero-image-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .float { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .shimmer { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); background-size: 200% 100%; animation: shimmer 2s infinite; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .event-card-img { height: 180px; object-fit: cover; width: 100%; }
+        .gradient-overlay { background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .bg-pattern-dots { background-image: radial-gradient(circle, #667eea 1px, transparent 1px); background-size: 20px 20px; }
+        .text-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .event-card-image-wrapper { height: 200px; overflow: hidden; position: relative; }
+        .event-card-image-wrapper img { transition: transform 0.5s ease; }
+        .event-card-image-wrapper:hover img { transform: scale(1.1); }
+        .category-tag { transition: all 0.3s ease; }
+        .category-tag:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+        .feature-icon { transition: all 0.3s ease; }
+        .feature-icon:hover { transform: scale(1.1) rotate(5deg); }
     </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased min-h-screen flex flex-col">
@@ -114,13 +140,19 @@
     <!-- Footer -->
     <footer class="gradient-nav mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
                     <div class="flex items-center space-x-2 text-white font-bold text-lg mb-3">
                         <i class="fas fa-calendar-alt text-indigo-400"></i>
                         <span>Event<span class="text-indigo-400">Book</span></span>
                     </div>
-                    <p class="text-gray-400 text-sm">Your ultimate student event booking platform. Discover, create, and book events seamlessly.</p>
+                    <p class="text-gray-400 text-sm mb-4">Your ultimate student event booking platform. Discover, create, and book events seamlessly.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-indigo-500 hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-indigo-500 hover:text-white transition-all"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-indigo-500 hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-indigo-500 hover:text-white transition-all"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
                 <div>
                     <h3 class="text-white font-semibold mb-3">Quick Links</h3>
@@ -133,11 +165,20 @@
                     </ul>
                 </div>
                 <div>
+                    <h3 class="text-white font-semibold mb-3">Categories</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><i class="fas fa-music mr-2 text-indigo-400"></i> Music & Concerts</li>
+                        <li><i class="fas fa-graduation-cap mr-2 text-indigo-400"></i> Academic</li>
+                        <li><i class="fas fa-running mr-2 text-indigo-400"></i> Sports</li>
+                        <li><i class="fas fa-laptop-code mr-2 text-indigo-400"></i> Tech & Workshops</li>
+                    </ul>
+                </div>
+                <div>
                     <h3 class="text-white font-semibold mb-3">Contact</h3>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li><i class="fas fa-envelope mr-2"></i> support@eventbook.com</li>
-                        <li><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-map-marker-alt mr-2"></i> Dundalk Institute of Technology</li>
+                        <li><i class="fas fa-envelope mr-2 text-indigo-400"></i> support@eventbook.com</li>
+                        <li><i class="fas fa-phone mr-2 text-indigo-400"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt mr-2 text-indigo-400"></i> Dundalk Institute of Technology</li>
                     </ul>
                 </div>
             </div>
