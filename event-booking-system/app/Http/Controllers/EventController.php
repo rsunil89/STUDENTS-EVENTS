@@ -8,16 +8,25 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $category = $request->query('category');
+
         $events = Event::where('status', '!=', 'cancelled')
+            ->when($category && $category !== 'all', function ($query) use ($category) {
+                $query->where(function ($q) use ($category) {
+                    $q->where('title', 'like', '%' . $category . '%')
+                      ->orWhere('description', 'like', '%' . $category . '%');
+                });
+            })
             ->withCount(['bookings' => function ($q) {
                 $q->where('status', 'confirmed');
             }])
             ->latest()
-            ->paginate(9);
+            ->paginate(9)
+            ->withQueryString();
 
-        return view('events.index', compact('events'));
+        return view('events.index', compact('events', 'category'));
     }
 
     public function create()
