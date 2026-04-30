@@ -23,15 +23,14 @@ jobs:
         with:
           php-version: '8.2'
 
-      - name: Install Composer dependencies in Laravel folder
-        working-directory: event-booking-system
+      - name: Install Composer dependencies
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress --no-dev --optimize-autoloader
 
-      - name: Upload Laravel app for deployment
+      - name: Upload app for deployment
         uses: actions/upload-artifact@v4
         with:
           name: php-app
-          path: event-booking-system
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
