@@ -31,8 +31,7 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-        Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('login')->with('status', 'Registration successful! Please sign in to continue.');
     }
 }

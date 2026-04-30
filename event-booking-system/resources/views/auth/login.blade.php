@@ -8,6 +8,13 @@
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div class="h-3 gradient-bg"></div>
             <div class="p-8">
+                @if (session('status'))
+                    <div class="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm flex items-center">
+                        <i class="fas fa-check-circle mr-2 text-green-500"></i>
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 <div class="text-center mb-8">
                     <div class="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg">
                         <i class="fas fa-sign-in-alt"></i>
