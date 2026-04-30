@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Event;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class EventController extends Controller
+{
+    public function index()
+    {
+        $events = Event::where('status', '!=', 'cancelled')
+            ->withCount(['bookings' => function ($q) {
+                $q->where('status', 'confirmed');
+            }])
+            ->latest()
+            ->paginate(9);
+
+        return view('events.index', compact('events'));
+    }
+
+    public function create()
+    {
+        return view('events.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'event_date' => 'required|date|after:now',
+            'location' => 'required|string|max:255',
+            'capacity' => 'required|integer|min:1',
+        ]);
+
+        $validated['user_id'] = Auth::id();
+        $validated['status'] = 'upcoming';
+
+        Event::create($validated);
+
+        return redirect()->route('events.index')
+            ->with('success', 'Event created successfully!');
+    }
+
+    public function show(Event $event)
+    {
+        $event->loadCount(['bookings' => function ($q) {
+            $q->where('status', 'confirmed');
+        }]);
+
+        $isBooked = false;
+        if (Auth::check()) {
+            $isBooked = $event->bookings()
+                ->where('user_id', Auth::id())
+                ->where('status', '!=', 'cancelled')
+                ->exists();
+        }
+
+        return view('events.show', compact('event', 'isBooked'));
+    }
+
+    public function edit(Event $event)
+    {
+        $this->authorize('update', $event);
+        return view('events.edit', compact('event'));
+    }
+
+    public function update(Request $request, Event $event)
+    {
+        $this->authorize('update', $event);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'event_date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'capacity' => 'required|integer|min:1',
+            'status' => 'required|in:upcoming,ongoing,completed,cancelled',
+        ]);
+
+        $event->update($validated);
+
+        return redirect()->route('events.show', $event)
+            ->with('success', 'Event updated successfully!');
+    }
+
+    public function destroy(Event $event)
+    {
+        $this->authorize('delete', $event);
+        $event->delete();
+
+        return redirect()->route('events.index')
+            ->with('success', 'Event deleted successfully!');
+    }
+}
